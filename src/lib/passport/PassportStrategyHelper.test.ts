@@ -16,8 +16,8 @@
 
 import express from 'express';
 import { UnsecuredJWT } from 'jose';
-import passport from 'passport';
-import { InternalOAuthError } from 'passport-oauth2';
+import passport from '@node-saml/passport-saml';
+import { InternalOAuthError } from  'passport-oauth2';
 import {
   executeRedirectStrategy,
   executeFrameHandlerStrategy,

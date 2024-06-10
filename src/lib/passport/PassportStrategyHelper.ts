@@ -15,7 +15,7 @@
  */
 
 import express from 'express';
-import passport from 'passport';
+import passport from '@node-saml/passport-saml';
 import { decodeJwt } from 'jose';
 import { InternalOAuthError } from 'passport-oauth2';
 import { ProfileInfo } from '@backstage/plugin-auth-node';
