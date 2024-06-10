@@ -25,7 +25,7 @@ export const authModuleSaml = createBackendModule({
           factory: saml.create({
             signIn: {
               resolver: async (info, ctx) => {
-                logger.info("DDDDDDDDDDDDDDDDDDDDDDDDDDD")
+
                 const {
                   profile: { email },
                 } = info;

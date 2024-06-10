@@ -77,7 +77,6 @@ export class SamlAuthProvider implements AuthProviderRouteHandlers {
   }
 
   async start(req: express.Request, res: express.Response): Promise<void> {
-    console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
     const { url } = await executeRedirectStrategy(req, this.strategy, {});
     res.redirect(url);
   }

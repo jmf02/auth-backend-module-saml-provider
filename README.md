@@ -1,4 +1,4 @@
-# @internal/backstage-plugin-auth-backend-module-saml
+# @internal/backstage-plugin-auth-backend-module-saml-provider
 
 The saml backend module for the auth plugin.
 
@@ -28,7 +28,7 @@ _This plugin was created through the Backstage CLI_
         - provider.ts
 
 
-- Modifiy the module.ts to create an extension of auth with :
+- Modify the module.ts to create an extension of auth with :
 
 ```
 export const authModuleSaml = createBackendModule({
@@ -47,7 +47,7 @@ export const authModuleSaml = createBackendModule({
           factory: saml.create({
             signIn: {
               resolver: async (info, ctx) => {
-                logger.info("DDDDDDDDDDDDDDDDDDDDDDDDDDD")
+
                 const {
                   profile: { email },
                 } = info;
@@ -129,7 +129,7 @@ export const samlAuthApiRef: ApiRef<
           }),
 ```
 
-* Modifiy the App.tsx
+* Modify the App.tsx
 ```
 providers={[
 ...,
