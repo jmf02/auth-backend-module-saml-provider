@@ -20,7 +20,7 @@ import { decodeJwt } from 'jose';
 import { InternalOAuthError } from 'passport-oauth2';
 import { ProfileInfo } from '@backstage/plugin-auth-node';
 import { PassportProfile } from './types';
-import { OAuthStartResponse } from '../../providers/types';
+import { OAuthStartResponse } from '../../types';
 
 export type PassportDoneCallback<Res, Private = never> = (
   err?: Error,
