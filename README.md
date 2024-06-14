@@ -13,6 +13,9 @@
 
         ```exec npx saml-idp --acsUrl "http://localhost:7007/api/auth/saml/handler/frame" --audience "http://localhost:7007" --port 7001  --cert=$PATH_TO_FILE"/idp-public-cert.pem" --key=$PATH_TO_FILE"/idp-private-key.pem"```
 
+* dependenies:
+  - "@node-saml/passport-saml"
+  - "@types/passport"
 
 * for the plugin :
     - from src, take
@@ -164,9 +167,9 @@ Notice the available variables  :
     idpCert: required
     privateKey: optional
     authnContext: optional
-    identifierFormat: 
+    identifierFormat: optional
     decryptionPvk: optional
-    signatureAlgorithm:
+    signatureAlgorithm: optional
     digestAlgorithm: optional
     acceptedClockSkewMs: optional
     wantAuthnResponseSigned: optional
