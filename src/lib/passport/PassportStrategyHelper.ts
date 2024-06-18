@@ -16,9 +16,9 @@
 
 import express from 'express';
 import passport from '@node-saml/passport-saml';
-// import { decodeJwt } from 'jose';
-// import { InternalOAuthError } from 'passport-oauth2';
-// import { ProfileInfo } from '@backstage/plugin-auth-node';
+import { decodeJwt } from 'jose';
+import { InternalOAuthError } from 'passport-oauth2';
+import { ProfileInfo } from '@backstage/plugin-auth-node';
 import { PassportProfile } from './types';
 import { OAuthStartResponse } from '../../types';
 
@@ -28,54 +28,54 @@ export type PassportDoneCallback<Res, Private = never> = (
   privateInfo?: Private,
 ) => void;
 
-// export const makeProfileInfo = (
-//   profile: PassportProfile,
-//   idToken?: string,
-// ): ProfileInfo => {
-//   let email: string | undefined = undefined;
-//   if (profile.emails && profile.emails.length > 0) {
-//     const [firstEmail] = profile.emails;
-//     email = firstEmail.value;
-//   }
+export const makeProfileInfo = (
+  profile: PassportProfile,
+  idToken?: string,
+): ProfileInfo => {
+  let email: string | undefined = undefined;
+  if (profile.emails && profile.emails.length > 0) {
+    const [firstEmail] = profile.emails;
+    email = firstEmail.value;
+  }
 
-//   let picture: string | undefined = undefined;
-//   if (profile.avatarUrl) {
-//     picture = profile.avatarUrl;
-//   } else if (profile.photos && profile.photos.length > 0) {
-//     const [firstPhoto] = profile.photos;
-//     picture = firstPhoto.value;
-//   }
+  let picture: string | undefined = undefined;
+  if (profile.avatarUrl) {
+    picture = profile.avatarUrl;
+  } else if (profile.photos && profile.photos.length > 0) {
+    const [firstPhoto] = profile.photos;
+    picture = firstPhoto.value;
+  }
 
-//   let displayName: string | undefined =
-//     profile.displayName ?? profile.username ?? profile.id;
+  let displayName: string | undefined =
+    profile.displayName ?? profile.username ?? profile.id;
 
-//   if ((!email || !picture || !displayName) && idToken) {
-//     try {
-//       const decoded = decodeJwt(idToken) as {
-//         email?: string;
-//         name?: string;
-//         picture?: string;
-//       };
-//       if (!email && decoded.email) {
-//         email = decoded.email;
-//       }
-//       if (!picture && decoded.picture) {
-//         picture = decoded.picture;
-//       }
-//       if (!displayName && decoded.name) {
-//         displayName = decoded.name;
-//       }
-//     } catch (e) {
-//       throw new Error(`Failed to parse id token and get profile info, ${e}`);
-//     }
-//   }
+  if ((!email || !picture || !displayName) && idToken) {
+    try {
+      const decoded = decodeJwt(idToken) as {
+        email?: string;
+        name?: string;
+        picture?: string;
+      };
+      if (!email && decoded.email) {
+        email = decoded.email;
+      }
+      if (!picture && decoded.picture) {
+        picture = decoded.picture;
+      }
+      if (!displayName && decoded.name) {
+        displayName = decoded.name;
+      }
+    } catch (e) {
+      throw new Error(`Failed to parse id token and get profile info, ${e}`);
+    }
+  }
 
-//   return {
-//     email,
-//     picture,
-//     displayName,
-//   };
-// };
+  return {
+    email,
+    picture,
+    displayName,
+  };
+};
 
 export const executeRedirectStrategy = async (
   req: express.Request,
@@ -109,23 +109,23 @@ export const executeFrameHandlerStrategy = async <Result, PrivateInfo = never>(
       ) => {
         reject(new Error(`Authentication rejected, ${info.message ?? ''}`));
       };
-      // strategy.error = (error: InternalOAuthError) => {
-      //   let message = `Authentication failed, ${error.message}`;
+      strategy.error = (error: InternalOAuthError) => {
+        let message = `Authentication failed, ${error.message}`;
 
-      //   if (error.oauthError?.data) {
-      //     try {
-      //       const errorData = JSON.parse(error.oauthError.data);
+        if (error.oauthError?.data) {
+          try {
+            const errorData = JSON.parse(error.oauthError.data);
 
-      //       if (errorData.message) {
-      //         message += ` - ${errorData.message}`;
-      //       }
-      //     } catch (parseError) {
-      //       message += ` - ${error.oauthError}`;
-      //     }
-      //   }
+            if (errorData.message) {
+              message += ` - ${errorData.message}`;
+            }
+          } catch (parseError) {
+            message += ` - ${error.oauthError}`;
+          }
+        }
 
-      //   reject(new Error(message));
-      // };
+        reject(new Error(message));
+      };
 
       strategy.redirect = () => {
         reject(new Error('Unexpected redirect'));
